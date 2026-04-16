@@ -1,0 +1,43 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables (contains API keys & secrets)
+.env
+
+# Session data
+.session.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Gemini AI assistant data
+.gemini/
+
+# Logs
+*.log
+
+# Database files (local)
+*.db
+*.sqlite3

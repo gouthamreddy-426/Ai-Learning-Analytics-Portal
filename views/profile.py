@@ -28,6 +28,11 @@ def render():
     profile = get_user_profile(user_id)
     if not profile:
         st.error("Could not load profile.")
+        if st.button("🚪 Logout", use_container_width=True, type="primary"):
+            clear_session()                           # delete browser cookie
+            for key in list(st.session_state.keys()):
+                del st.session_state[key]
+            st.rerun()
         return
 
     member_since = profile.get("created_at", "")[:10]

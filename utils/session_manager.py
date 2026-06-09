@@ -12,42 +12,54 @@ It is ideal for a single-user local development application.
 
 import json
 from pathlib import Path
+from datetime import datetime, timedelta
 
-# Session file lives in the project root (same dir as app.py)
 _SESSION_FILE = Path(__file__).parent.parent / ".session.json"
+
+SESSION_EXPIRY_DAYS = 1
 
 
 def save_session(user: dict) -> None:
-    """Persist the user dict to disk."""
     try:
-        _SESSION_FILE.write_text(json.dumps(user), encoding="utf-8")
+        session_data = {
+            "user": user,
+            "login_time": datetime.now().isoformat()
+        }
+
+        _SESSION_FILE.write_text(
+            json.dumps(session_data),
+            encoding="utf-8"
+        )
     except Exception:
         pass
 
 
-def load_session() -> dict | None:
-    """
-    Read the session file and return the user dict, or None if not found / invalid.
-    """
+def load_session():
     try:
-        if _SESSION_FILE.exists():
-            data = json.loads(_SESSION_FILE.read_text(encoding="utf-8"))
-            if isinstance(data, dict) and data.get("user_id"):
-                return data
+        if not _SESSION_FILE.exists():
+            return None
+
+        data = json.loads(
+            _SESSION_FILE.read_text(encoding="utf-8")
+        )
+
+        login_time = datetime.fromisoformat(
+            data["login_time"]
+        )
+
+        if datetime.now() - login_time > timedelta(days=1):
+            clear_session()
+            return None
+
+        return data["user"]
+
     except Exception:
-        pass
-    return None
+        return None
 
 
-def clear_session() -> None:
-    """Delete the session file (called on logout)."""
+def clear_session():
     try:
         if _SESSION_FILE.exists():
             _SESSION_FILE.unlink()
     except Exception:
         pass
-
-
-# Keep these for backwards-compat in case anything still imports them
-def get_cookie_manager():
-    pass

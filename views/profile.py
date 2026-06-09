@@ -5,7 +5,7 @@ Profile page — view and update user profile.
 import streamlit as st
 from backend.auth import get_user_profile, update_user_name
 from utils.helpers import format_date
-from utils.session_manager import clear_session, save_session
+# from utils.session_manager import clear_session, save_session
 
 
 def render():
@@ -82,7 +82,7 @@ def render():
             success = update_user_name(user_id, new_name.strip())
             if success:
                 st.session_state["user"]["name"] = new_name.strip()
-                save_session(st.session_state["user"])  # refresh cookie with updated name
+                
                 st.success("Profile updated!")
                 st.rerun()
             else:

@@ -7,7 +7,7 @@ import base64
 from pathlib import Path
 import streamlit as st
 from utils.constants import APP_TITLE, APP_ICON, APP_LAYOUT, NAV_ITEMS
-from utils.session_manager import clear_session
+
 
 # ── Load logo as base64 ───────────────────────────────────────
 def _load_logo_b64() -> str:
@@ -236,19 +236,14 @@ st.markdown(
 )
 
 # ── Session Initialisation ────────────────────────────────────
-from utils.session_manager import load_session
+
 
 if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
 if "current_page" not in st.session_state:
     st.session_state["current_page"] = "Dashboard"
 
-# Restore session from local file if not already logged in
-if not st.session_state["logged_in"]:
-    saved_user = load_session()
-    if saved_user:
-        st.session_state["logged_in"] = True
-        st.session_state["user"]       = saved_user
+
 
 # ── Auth Gate ─────────────────────────────────────────────────
 if not st.session_state["logged_in"]:

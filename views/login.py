@@ -4,7 +4,7 @@ Login & Signup page.
 
 import streamlit as st
 from backend.auth import signup, login
-from utils.session_manager import save_session
+
 
 
 def render():
@@ -63,7 +63,7 @@ def render():
                         st.session_state["logged_in"]    = True
                         st.session_state["is_first_login"] = is_first
                         # ── Persist login in browser cookie ────────────
-                        save_session(result["user"])
+
                         if is_first:
                             st.success(f"🎉 Welcome, {result['user']['name']}! Your account is all set.")
                         else:
